@@ -1,0 +1,9 @@
+target/
+dist/*.log
+*.class
+.DS_Store
+__MACOSX/
+nbproject/private/
+.idea/
+*.iml
+drs-server.properties.local
