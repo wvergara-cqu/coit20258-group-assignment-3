@@ -1,0 +1,11 @@
+username,password,full_name,role
+admin,Admin@2026,System Administrator,ADMIN
+controller,Control@2026,Riley Morgan,CONTROLLER
+controller2,Control@2026,Sam Okafor,CONTROLLER
+jsmith,Field@2026,John Smith,RESPONDER
+mgarcia,Field@2026,Maria Garcia,RESPONDER
+jlee,Field@2026,Dr. James Lee,RESPONDER
+abrown,Field@2026,Anna Brown,RESPONDER
+mjohnson,Field@2026,Mike Johnson,RESPONDER
+cwhite,Field@2026,Officer Chris White,RESPONDER
+citizen,Citizen@2026,Jane Doe,CITIZEN

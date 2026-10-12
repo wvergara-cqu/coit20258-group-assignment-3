@@ -1,0 +1,14 @@
+type,severity,location,description,reporter_name,reporter_phone,status,priority_override,hours_ago
+# Disaster reports captured while testing DRS-Initial (Assignment 2), imported unchanged.
+FIRE,HIGH,"12 Main Street, Brisbane QLD",Residential building fire with multiple floors affected.,Jane Doe,0400-123-456,ASSESSING,,52
+HURRICANE,CRITICAL,"Esplanade, Cairns QLD",Category 4 cyclone crossing the coast; roofs lifted and power lines down.,Liam Nguyen,0412-555-010,RESPONDING,,49
+FLOOD,HIGH,"Fitzroy River, Rockhampton QLD",River has broken its banks; low-lying streets in Depot Hill under water.,Priya Sharma,0423-555-020,ASSESSING,,30
+EARTHQUAKE,MEDIUM,"Gladstone Marina, Gladstone QLD",Magnitude 4.8 tremor; cracks reported in marina breakwall.,Tom Becker,0434-555-030,REPORTED,,26
+FIRE,CRITICAL,"Mount Archer National Park, Rockhampton QLD",Bushfire spreading towards Frenchville; heavy smoke over the ridge.,Olivia Park,0445-555-040,REPORTED,,20
+OTHER,LOW,"Bruce Highway, Gracemere QLD",Chemical drum spill on road shoulder; no injuries reported.,Ahmed Khan,0456-555-050,RESOLVED,,72
+FLOOD,MEDIUM,"Pioneer River, Mackay QLD",Flash flooding over the Forgan Bridge approach.,Grace Liu,0467-555-060,REPORTED,,12
+FIRE,LOW,"Yeppoon Foreshore, Yeppoon QLD",Small grass fire near the lagoon car park.,Noah Wilson,0478-555-070,RESOLVED,,96
+HURRICANE,HIGH,"Airlie Beach, Whitsundays QLD",Severe tropical storm; boats torn from moorings.,Mia Rossi,0489-555-080,REPORTED,,8
+EARTHQUAKE,HIGH,"Bundaberg CBD, Bundaberg QLD",Magnitude 5.6 quake; facade damage to heritage buildings.,Ethan Brown,0490-555-090,REPORTED,55,5
+OTHER,MEDIUM,"Emerald Rail Yard, Emerald QLD",Freight derailment; diesel leak contained.,Chloe Martin,0401-555-100,ASSESSING,,3
+FLOOD,CRITICAL,"Kawana, Rockhampton QLD",Evacuation centre requested; water entering homes on Moores Creek Rd.,Lucas White,0402-555-110,REPORTED,,1

@@ -1,0 +1,17 @@
+name,role,phone,department,username
+John Smith,Firefighter,0401-001-001,Fire & Emergency,jsmith
+Maria Garcia,Fire Captain,0401-001-002,Fire & Emergency,mgarcia
+Dr. James Lee,Doctor,0401-002-001,Hospital Services,jlee
+Anna Brown,Paramedic,0401-002-002,Hospital Services,abrown
+Mike Johnson,Electrician,0401-003-001,Electricity Authority,mjohnson
+Sarah Williams,Electrical Engineer,0401-003-002,Electricity Authority,
+Tom Davis,Traffic Controller,0401-004-001,Transportation Dept,
+Lisa Martinez,Road Engineer,0401-004-002,Transportation Dept,
+Paul Wilson,Waste Technician,0401-005-001,Waste Management,
+Rachel Anderson,Sanitation Supervisor,0401-005-002,Waste Management,
+David Taylor,Plumber,0401-006-001,Water Supply Authority,
+Emma Thomas,Water Engineer,0401-006-002,Water Supply Authority,
+Robert Jackson,Principal,0401-007-001,School Administration,
+Susan Harris,Welfare Officer,0401-007-002,School Administration,
+Officer Chris White,Police Officer,0401-008-001,Law Enforcement,cwhite
+Sergeant Pat Lewis,Sergeant,0401-008-002,Law Enforcement,
