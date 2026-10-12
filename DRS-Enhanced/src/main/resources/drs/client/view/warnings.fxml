@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="drs.client.controller.WarningController" spacing="14">
+    <padding><Insets top="14" right="18" bottom="14" left="18"/></padding>
+    <VBox spacing="10" HBox.hgrow="ALWAYS" minWidth="420">
+        <Label text="Public Warnings Board" styleClass="title"/>
+        <HBox spacing="8" alignment="CENTER_LEFT">
+            <Label text="Find my area" styleClass="field-label"/>
+            <TextField fx:id="areaFilterField" promptText="e.g. Rockhampton" HBox.hgrow="ALWAYS"/>
+        </HBox>
+        <Label fx:id="boardCountLabel" styleClass="hint"/>
+        <ListView fx:id="boardList" VBox.vgrow="ALWAYS">
+            <placeholder><Label text="There are no active warnings."/></placeholder>
+        </ListView>
+        <VBox fx:id="registerPane" spacing="6">
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <Label text="Warning register" styleClass="subtitle"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="Cancel selected warning" onAction="#handleCancel" styleClass="secondary-button"/>
+            </HBox>
+            <TableView fx:id="registerTable" prefHeight="190">
+                <columns>
+                    <TableColumn fx:id="wIdCol" text="ID" prefWidth="40"/>
+                    <TableColumn fx:id="wReportCol" text="Report" prefWidth="55"/>
+                    <TableColumn fx:id="wLevelCol" text="Level" prefWidth="130"/>
+                    <TableColumn fx:id="wAreaCol" text="Area" prefWidth="170"/>
+                    <TableColumn fx:id="wRadiusCol" text="km" prefWidth="45"/>
+                    <TableColumn fx:id="wStatusCol" text="Status" prefWidth="75"/>
+                    <TableColumn fx:id="wIssuedCol" text="Issued" prefWidth="135"/>
+                    <TableColumn fx:id="wExpiresCol" text="Expires" prefWidth="135"/>
+                    <TableColumn fx:id="wByCol" text="By" prefWidth="80"/>
+                </columns>
+                <placeholder><Label text="No warnings issued yet."/></placeholder>
+            </TableView>
+        </VBox>
+    </VBox>
+    <VBox fx:id="issuePane" styleClass="card" spacing="8" minWidth="360" maxWidth="400">
+        <Label text="Issue Public Warning" styleClass="subtitle"/>
+        <Label text="Selecting an incident pre-fills a suggested warning." styleClass="hint" wrapText="true"/>
+        <Label text="Incident" styleClass="field-label"/>
+        <ComboBox fx:id="incidentComboBox" maxWidth="Infinity"/>
+        <Label text="Warning level" styleClass="field-label"/>
+        <ComboBox fx:id="levelComboBox" maxWidth="Infinity"/>
+        <Label text="Affected area" styleClass="field-label"/>
+        <TextField fx:id="affectedAreaField"/>
+        <HBox spacing="10">
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Radius (km)" styleClass="field-label"/>
+                <Spinner fx:id="radiusSpinner" maxWidth="Infinity"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Valid for (hours)" styleClass="field-label"/>
+                <Spinner fx:id="hoursSpinner" maxWidth="Infinity"/>
+            </VBox>
+        </HBox>
+        <Label text="Message to the public" styleClass="field-label"/>
+        <TextArea fx:id="messageArea" wrapText="true" prefRowCount="4"/>
+        <Label text="Recommended action" styleClass="field-label"/>
+        <TextArea fx:id="actionArea" wrapText="true" prefRowCount="2"/>
+        <Button fx:id="issueButton" text="Sign &amp; Broadcast Warning" onAction="#handleIssue"
+                styleClass="primary-button" maxWidth="Infinity"/>
+        <Label fx:id="statusLabel" wrapText="true"/>
+    </VBox>
+</HBox>

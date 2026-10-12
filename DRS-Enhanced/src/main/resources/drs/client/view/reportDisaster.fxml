@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="drs.client.controller.ReportDisasterController" spacing="12">
+    <padding><Insets top="14" right="18" bottom="14" left="18"/></padding>
+    <Label text="Report a Disaster" styleClass="title"/>
+    <VBox styleClass="card" spacing="10">
+        <GridPane hgap="12" vgap="10">
+            <columnConstraints>
+                <ColumnConstraints minWidth="130"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+                <ColumnConstraints minWidth="130"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+            </columnConstraints>
+            <Label text="Disaster type *" styleClass="field-label" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <ComboBox fx:id="typeComboBox" maxWidth="Infinity" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+            <Label text="Severity *" styleClass="field-label" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+            <ComboBox fx:id="severityComboBox" maxWidth="Infinity" GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+            <Label text="Location *" styleClass="field-label" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <TextField fx:id="locationField" promptText="e.g. 12 Main St, Rockhampton QLD"
+                       GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
+            <Label text="Reporter name *" styleClass="field-label" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <TextField fx:id="reporterNameField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            <Label text="Reporter phone *" styleClass="field-label" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+            <TextField fx:id="reporterPhoneField" promptText="e.g. 0400-000-000" GridPane.rowIndex="2" GridPane.columnIndex="3"/>
+            <Label text="Description *" styleClass="field-label" GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.valignment="TOP"/>
+            <TextArea fx:id="descriptionArea" promptText="What is happening? Any people injured or trapped?"
+                      prefRowCount="3" wrapText="true" GridPane.rowIndex="3" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
+        </GridPane>
+        <HBox spacing="12" alignment="CENTER_LEFT">
+            <Button fx:id="submitButton" text="Submit Report" onAction="#handleSubmit" styleClass="primary-button"/>
+            <Button text="Clear" onAction="#handleClear"/>
+            <Label fx:id="priorityPreviewLabel"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="Your name and phone are encrypted and only visible to response controllers." styleClass="hint"/>
+        </HBox>
+        <Label fx:id="statusLabel" wrapText="true"/>
+    </VBox>
+    <Label text="My submitted reports (track progress by ID)" styleClass="subtitle"/>
+    <TableView fx:id="myReportsTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="idCol" text="ID" prefWidth="55"/>
+            <TableColumn fx:id="typeCol" text="Type" prefWidth="110"/>
+            <TableColumn fx:id="severityCol" text="Severity" prefWidth="90"/>
+            <TableColumn fx:id="locationCol" text="Location" prefWidth="320"/>
+            <TableColumn fx:id="priorityCol" text="Priority" prefWidth="75"/>
+            <TableColumn fx:id="statusCol" text="Status" prefWidth="110"/>
+            <TableColumn fx:id="timestampCol" text="Submitted" prefWidth="160"/>
+        </columns>
+        <placeholder><Label text="You have not submitted any reports yet."/></placeholder>
+    </TableView>
+</VBox>

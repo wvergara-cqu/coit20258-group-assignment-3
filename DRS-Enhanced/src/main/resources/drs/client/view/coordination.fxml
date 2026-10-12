@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="drs.client.controller.CoordinationController" spacing="10">
+    <padding><Insets top="14" right="18" bottom="14" left="18"/></padding>
+    <Label text="Coordinate Response" styleClass="title"/>
+    <VBox styleClass="card" spacing="8">
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="Incident" styleClass="field-label"/>
+            <ComboBox fx:id="disasterComboBox" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+        </HBox>
+        <Label fx:id="disasterDetailLabel"/>
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label fx:id="recommendedLabel" wrapText="true" style="-fx-text-fill: #1f618d; -fx-font-weight: bold;" HBox.hgrow="ALWAYS"/>
+            <Button text="Select recommended" onAction="#handleSelectRecommended" styleClass="secondary-button"/>
+        </HBox>
+    </VBox>
+    <HBox spacing="12" VBox.vgrow="ALWAYS">
+        <VBox spacing="4" HBox.hgrow="ALWAYS">
+            <Label text="Departments (Ctrl/Cmd-click for several)" styleClass="field-label"/>
+            <ListView fx:id="departmentListView" VBox.vgrow="ALWAYS" prefHeight="170"/>
+        </VBox>
+        <VBox spacing="4" HBox.hgrow="ALWAYS">
+            <Label text="Available responders - one field task each" styleClass="field-label"/>
+            <ListView fx:id="responderListView" VBox.vgrow="ALWAYS" prefHeight="170"/>
+        </VBox>
+        <VBox spacing="6" styleClass="card" minWidth="280">
+            <Label text="Response activities" styleClass="field-label"/>
+            <CheckBox fx:id="chkWarningEvacuation" text="Warning / Evacuation"/>
+            <CheckBox fx:id="chkSearchRescue" text="Search and Rescue"/>
+            <CheckBox fx:id="chkImmediateAssistance" text="Providing Immediate Assistance"/>
+            <CheckBox fx:id="chkAssessingDamage" text="Assessing Damage"/>
+            <CheckBox fx:id="chkContinuingAssistance" text="Continuing Assistance"/>
+            <CheckBox fx:id="chkRestoration" text="Restoration / Infrastructure"/>
+            <TextArea fx:id="notesArea" promptText="Instructions for field teams" prefRowCount="3" wrapText="true"/>
+            <Button text="Save &amp; Dispatch" onAction="#handleSaveResponse" styleClass="primary-button" maxWidth="Infinity"/>
+        </VBox>
+    </HBox>
+    <Label fx:id="statusLabel" wrapText="true"/>
+    <Label text="Saved responses" styleClass="subtitle"/>
+    <TableView fx:id="responsesTable" prefHeight="170">
+        <columns>
+            <TableColumn fx:id="respIdCol" text="Response" prefWidth="80"/>
+            <TableColumn fx:id="respDisasterCol" text="Report" prefWidth="70"/>
+            <TableColumn fx:id="respDeptCol" text="Departments" prefWidth="420"/>
+            <TableColumn fx:id="respPersonCountCol" text="Responders" prefWidth="90"/>
+            <TableColumn fx:id="respByCol" text="Created by" prefWidth="110"/>
+            <TableColumn fx:id="respCreatedCol" text="Created" prefWidth="160"/>
+        </columns>
+        <placeholder><Label text="No responses yet."/></placeholder>
+    </TableView>
+</VBox>

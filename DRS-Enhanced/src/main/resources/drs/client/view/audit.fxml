@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="drs.client.controller.AuditController" spacing="10">
+    <padding><Insets top="14" right="18" bottom="14" left="18"/></padding>
+    <HBox spacing="12" alignment="CENTER_LEFT">
+        <Label text="Security Audit Log" styleClass="title"/>
+        <Label fx:id="countLabel" styleClass="subtitle"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Refresh" onAction="#handleRefresh" styleClass="secondary-button"/>
+    </HBox>
+    <Label text="Append-only record of every state change: server time stamp, SHA-256 hash of the signed payload and RSA signature verification result."
+           styleClass="hint" wrapText="true"/>
+    <TableView fx:id="auditTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="aIdCol" text="#" prefWidth="50"/>
+            <TableColumn fx:id="aTimeCol" text="Time (server)" prefWidth="150"/>
+            <TableColumn fx:id="aUserCol" text="User" prefWidth="100"/>
+            <TableColumn fx:id="aActionCol" text="Action" prefWidth="190"/>
+            <TableColumn fx:id="aEntityCol" text="Entity" prefWidth="100"/>
+            <TableColumn fx:id="aEntityIdCol" text="ID" prefWidth="50"/>
+            <TableColumn fx:id="aHashCol" text="Payload SHA-256" prefWidth="170"/>
+            <TableColumn fx:id="aSigCol" text="Signature" prefWidth="100"/>
+        </columns>
+    </TableView>
+    <Label fx:id="statusLabel"/>
+</VBox>

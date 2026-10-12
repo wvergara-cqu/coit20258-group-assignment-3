@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="drs.client.controller.LoginController" styleClass="login-pane">
+    <VBox fx:id="loginCard" styleClass="login-card" spacing="12" maxWidth="420" maxHeight="-Infinity">
+        <Label text="Disaster Response System" styleClass="title"/>
+        <Label text="DRS-Enhanced - secure sign in" styleClass="hint"/>
+        <Separator/>
+        <GridPane hgap="10" vgap="10">
+            <columnConstraints>
+                <ColumnConstraints minWidth="95"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+            </columnConstraints>
+            <Label text="Server" styleClass="field-label" GridPane.rowIndex="0"/>
+            <HBox spacing="6" GridPane.rowIndex="0" GridPane.columnIndex="1">
+                <TextField fx:id="hostField" text="localhost" HBox.hgrow="ALWAYS"/>
+                <TextField fx:id="portField" text="5050" prefWidth="70"/>
+            </HBox>
+            <Label text="Username" styleClass="field-label" GridPane.rowIndex="1"/>
+            <TextField fx:id="usernameField" promptText="e.g. controller" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            <Label text="Password" styleClass="field-label" GridPane.rowIndex="2"/>
+            <PasswordField fx:id="passwordField" onAction="#handleLogin" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+        </GridPane>
+        <VBox fx:id="registerBox" spacing="10">
+            <Label text="Citizen registration" styleClass="subtitle"/>
+            <PasswordField fx:id="confirmField" promptText="Confirm password"/>
+            <TextField fx:id="fullNameField" promptText="Full name"/>
+            <Label text="Passwords need 8+ characters with a letter and a digit." styleClass="hint"/>
+            <Button fx:id="createAccountButton" text="Create citizen account" onAction="#handleRegister"
+                    styleClass="primary-button" maxWidth="Infinity"/>
+        </VBox>
+        <Button fx:id="loginButton" text="Log in" onAction="#handleLogin" styleClass="primary-button"
+                maxWidth="Infinity" defaultButton="true"/>
+        <Button fx:id="registerToggle" text="New citizen? Create an account" onAction="#handleToggleRegister"
+                styleClass="ghost-button"/>
+        <Label fx:id="statusLabel" wrapText="true"/>
+        <Label text="Signing keys are created on first login and stored in ~/.drs-enhanced/keys" styleClass="hint" wrapText="true"/>
+    </VBox>
+</StackPane>

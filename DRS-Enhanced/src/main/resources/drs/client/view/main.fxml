@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="drs.client.controller.MainController">
+    <top>
+        <VBox>
+            <HBox styleClass="header-bar" spacing="18" alignment="CENTER_LEFT">
+                <Label text="DRS-Enhanced" styleClass="header-title"/>
+                <Label fx:id="userLabel" styleClass="header-text"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label fx:id="serverLabel" styleClass="header-text"/>
+                <Button text="Log out" onAction="#handleLogout" styleClass="secondary-button"/>
+            </HBox>
+            <HBox styleClass="summary-bar">
+                <Label fx:id="summaryLabel" styleClass="summary-text"/>
+            </HBox>
+        </VBox>
+    </top>
+    <center>
+        <TabPane fx:id="mainTabPane" tabClosingPolicy="UNAVAILABLE"/>
+    </center>
+</BorderPane>

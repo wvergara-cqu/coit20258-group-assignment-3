@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="drs.client.controller.ResourceController" spacing="10">
+    <padding><Insets top="14" right="18" bottom="14" left="18"/></padding>
+    <HBox spacing="12" alignment="CENTER_LEFT">
+        <Label text="Resource Availability" styleClass="title"/>
+        <Label fx:id="summaryLabel" styleClass="subtitle"/>
+    </HBox>
+    <HBox spacing="8" alignment="CENTER_LEFT">
+        <Label text="Departments" styleClass="subtitle"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Toggle department availability" onAction="#handleToggleDepartment" styleClass="secondary-button"/>
+    </HBox>
+    <TableView fx:id="departmentTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="dIdCol" text="ID" prefWidth="45"/>
+            <TableColumn fx:id="dNameCol" text="Name" prefWidth="200"/>
+            <TableColumn fx:id="dTypeCol" text="Type" prefWidth="150"/>
+            <TableColumn fx:id="dContactCol" text="Contact" prefWidth="180"/>
+            <TableColumn fx:id="dPhoneCol" text="Phone" prefWidth="120"/>
+            <TableColumn fx:id="dStatusCol" text="Status" prefWidth="100"/>
+        </columns>
+    </TableView>
+    <HBox spacing="8" alignment="CENTER_LEFT">
+        <Label text="Responders" styleClass="subtitle"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Toggle responder availability" onAction="#handleToggleResponder" styleClass="secondary-button"/>
+    </HBox>
+    <TableView fx:id="responderTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="rIdCol" text="ID" prefWidth="45"/>
+            <TableColumn fx:id="rNameCol" text="Name" prefWidth="180"/>
+            <TableColumn fx:id="rRoleCol" text="Role" prefWidth="160"/>
+            <TableColumn fx:id="rDeptCol" text="Department" prefWidth="180"/>
+            <TableColumn fx:id="rLoginCol" text="Login" prefWidth="100"/>
+            <TableColumn fx:id="rStatusCol" text="Status" prefWidth="100"/>
+        </columns>
+    </TableView>
+    <Label fx:id="statusLabel"/>
+</VBox>

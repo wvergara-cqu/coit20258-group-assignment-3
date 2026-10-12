@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="drs.client.controller.HistoryController" spacing="10">
+    <padding><Insets top="14" right="18" bottom="14" left="18"/></padding>
+    <Label text="Incident History Log" styleClass="title"/>
+    <HBox spacing="10" alignment="CENTER_LEFT" styleClass="card">
+        <Label text="Type" styleClass="field-label"/>
+        <ComboBox fx:id="typeFilterComboBox"/>
+        <Label text="Status" styleClass="field-label"/>
+        <ComboBox fx:id="statusFilterComboBox"/>
+        <Button text="Reset" onAction="#handleReset"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="countLabel" styleClass="subtitle"/>
+    </HBox>
+    <TableView fx:id="historyTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="idCol" text="ID" prefWidth="45"/>
+            <TableColumn fx:id="typeCol" text="Type" prefWidth="95"/>
+            <TableColumn fx:id="severityCol" text="Severity" prefWidth="75"/>
+            <TableColumn fx:id="locationCol" text="Location" prefWidth="260"/>
+            <TableColumn fx:id="priorityCol" text="Priority" prefWidth="65"/>
+            <TableColumn fx:id="statusCol" text="Status" prefWidth="90"/>
+            <TableColumn fx:id="reporterCol" text="Reporter" prefWidth="120"/>
+            <TableColumn fx:id="createdCol" text="Created" prefWidth="140"/>
+            <TableColumn fx:id="updatedCol" text="Updated" prefWidth="140"/>
+        </columns>
+    </TableView>
+    <TextArea fx:id="detailArea" editable="false" wrapText="true" prefRowCount="6"/>
+    <Label fx:id="statusLabel"/>
+</VBox>

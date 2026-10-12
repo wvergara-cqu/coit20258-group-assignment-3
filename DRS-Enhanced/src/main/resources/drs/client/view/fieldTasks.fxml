@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="drs.client.controller.FieldTaskController" spacing="10">
+    <padding><Insets top="14" right="18" bottom="14" left="18"/></padding>
+    <HBox spacing="12" alignment="CENTER_LEFT">
+        <Label fx:id="titleLabel" styleClass="title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label text="Show" styleClass="field-label"/>
+        <ComboBox fx:id="filterComboBox"/>
+        <Button text="Refresh" onAction="#handleRefresh" styleClass="secondary-button"/>
+    </HBox>
+    <TableView fx:id="taskTable" VBox.vgrow="ALWAYS" prefHeight="250">
+        <columns>
+            <TableColumn fx:id="taskIdCol" text="Task" prefWidth="55"/>
+            <TableColumn fx:id="reportCol" text="Report" prefWidth="60"/>
+            <TableColumn fx:id="disasterCol" text="Disaster" prefWidth="90"/>
+            <TableColumn fx:id="locationCol" text="Location" prefWidth="260"/>
+            <TableColumn fx:id="responderCol" text="Responder" prefWidth="150"/>
+            <TableColumn fx:id="deptCol" text="Department" prefWidth="150"/>
+            <TableColumn fx:id="taskStatusCol" text="Status" prefWidth="110"/>
+            <TableColumn fx:id="updatedCol" text="Last update" prefWidth="150"/>
+        </columns>
+        <placeholder><Label text="No field tasks."/></placeholder>
+    </TableView>
+    <HBox spacing="12">
+        <VBox styleClass="card" spacing="6" HBox.hgrow="ALWAYS">
+            <Label fx:id="instructionsLabel" styleClass="subtitle" wrapText="true"/>
+            <TextArea fx:id="instructionsArea" editable="false" wrapText="true" prefRowCount="4"/>
+        </VBox>
+        <VBox fx:id="updateBox" styleClass="card" spacing="8" minWidth="300">
+            <Label text="Update task status" styleClass="subtitle"/>
+            <ComboBox fx:id="nextStatusComboBox" maxWidth="Infinity"/>
+            <TextField fx:id="noteField" promptText="Field note (required when declining)"/>
+            <Button fx:id="updateButton" text="Sign &amp; Update" onAction="#handleUpdate" styleClass="primary-button" maxWidth="Infinity"/>
+            <Label text="Each update is digitally signed and time-stamped." styleClass="hint" wrapText="true"/>
+        </VBox>
+    </HBox>
+    <Label fx:id="statusLabel" wrapText="true"/>
+    <Label text="Status history (immutable)" styleClass="subtitle"/>
+    <TableView fx:id="historyTable" prefHeight="160">
+        <columns>
+            <TableColumn fx:id="hTimeCol" text="Time" prefWidth="150"/>
+            <TableColumn fx:id="hFromCol" text="From" prefWidth="110"/>
+            <TableColumn fx:id="hToCol" text="To" prefWidth="110"/>
+            <TableColumn fx:id="hNoteCol" text="Note" prefWidth="330"/>
+            <TableColumn fx:id="hByCol" text="By" prefWidth="100"/>
+            <TableColumn fx:id="hSigCol" text="Signature" prefWidth="100"/>
+        </columns>
+        <placeholder><Label text="Select a task to see its history."/></placeholder>
+    </TableView>
+</VBox>

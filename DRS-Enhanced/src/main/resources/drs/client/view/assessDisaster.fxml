@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="drs.client.controller.AssessDisasterController" spacing="10">
+    <padding><Insets top="14" right="18" bottom="14" left="18"/></padding>
+    <HBox spacing="14" alignment="CENTER_LEFT">
+        <Label text="Assess &amp; Prioritise" styleClass="title"/>
+        <Label fx:id="queueLabel" styleClass="subtitle"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Next most urgent" onAction="#handleNextInQueue" styleClass="secondary-button"/>
+    </HBox>
+    <TableView fx:id="reportsTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="idCol" text="ID" prefWidth="50"/>
+            <TableColumn fx:id="typeCol" text="Type" prefWidth="100"/>
+            <TableColumn fx:id="severityCol" text="Severity" prefWidth="80"/>
+            <TableColumn fx:id="locationCol" text="Location" prefWidth="300"/>
+            <TableColumn fx:id="priorityCol" text="Priority" prefWidth="70"/>
+            <TableColumn fx:id="statusCol" text="Status" prefWidth="100"/>
+            <TableColumn fx:id="reporterCol" text="Reporter" prefWidth="130"/>
+            <TableColumn fx:id="timestampCol" text="Submitted" prefWidth="150"/>
+        </columns>
+    </TableView>
+    <HBox spacing="12">
+        <GridPane styleClass="card" hgap="10" vgap="6" HBox.hgrow="ALWAYS">
+            <columnConstraints>
+                <ColumnConstraints minWidth="90"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+            </columnConstraints>
+            <Label text="Tracking ID" styleClass="field-label" GridPane.rowIndex="0"/>
+            <Label fx:id="detailIdLabel" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+            <Label text="Type" styleClass="field-label" GridPane.rowIndex="1"/>
+            <Label fx:id="detailTypeLabel" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            <Label text="Severity" styleClass="field-label" GridPane.rowIndex="2"/>
+            <Label fx:id="detailSeverityLabel" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            <Label text="Location" styleClass="field-label" GridPane.rowIndex="3"/>
+            <Label fx:id="detailLocationLabel" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+            <Label text="Reporter" styleClass="field-label" GridPane.rowIndex="4"/>
+            <Label fx:id="detailReporterLabel" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+            <Label text="Time" styleClass="field-label" GridPane.rowIndex="5"/>
+            <Label fx:id="detailTimeLabel" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+            <Label text="Description" styleClass="field-label" GridPane.rowIndex="6" GridPane.valignment="TOP"/>
+            <Label fx:id="detailDescLabel" wrapText="true" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+        </GridPane>
+        <VBox styleClass="card" spacing="8" minWidth="260">
+            <Label text="Actions" styleClass="subtitle"/>
+            <Button fx:id="startAssessmentBtn" text="Start Assessment" onAction="#handleStartAssessment" maxWidth="Infinity"/>
+            <Button fx:id="respondingBtn" text="Mark Responding" onAction="#handleMarkResponding" maxWidth="Infinity"/>
+            <Button fx:id="markResolvedBtn" text="Mark Resolved" onAction="#handleMarkResolved" maxWidth="Infinity"/>
+            <Separator/>
+            <Label text="Override priority (1-100)" styleClass="field-label"/>
+            <HBox spacing="6">
+                <TextField fx:id="priorityOverrideField" prefWidth="70"/>
+                <Button fx:id="overridePriorityBtn" text="Apply" onAction="#handleOverridePriority" styleClass="secondary-button"/>
+            </HBox>
+        </VBox>
+    </HBox>
+    <Label fx:id="statusLabel" wrapText="true"/>
+</VBox>
