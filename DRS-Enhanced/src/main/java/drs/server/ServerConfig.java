@@ -79,7 +79,10 @@ public class ServerConfig {
         return String.format("jdbc:mysql://%s:%d/%s?%s", getDbHost(), getDbPort(), getDbName(), jdbcOptions());
     }
 
+    // session time zone forced to UTC so MySQL NOW() matches the stored timestamps
+    // (otherwise warnings expired straight away on machines not set to UTC)
     private String jdbcOptions() {
-        return "useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8";
+        return "useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+                + "&forceConnectionTimeZoneToSession=true&characterEncoding=UTF-8";
     }
 }
