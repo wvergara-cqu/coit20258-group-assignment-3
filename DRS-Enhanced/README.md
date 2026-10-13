@@ -17,30 +17,73 @@ Enhanced features (new in A3):
 - JDK 21 or later, Maven 3.8+ (bundled with NetBeans 21+)
 - MySQL Server 8.x running on localhost:3306
 
-## 1. Configure MySQL
-Edit `src/main/resources/drs/server/server.properties` and set `db.user` / `db.password`
-(default `root` / `root`). The server **creates the database and all tables itself** on first start
-and loads the DRS-Initial (Assignment 2) data. Optionally you can load it manually first:
+## 1. Configure MySQL (do this before running anything)
+1. Make sure MySQL Server 8 is installed and running on your machine.
+2. Open `src/main/resources/drs/server/server.properties` and set the values to match **your** MySQL
+   installation:
+
+   ```properties
+   db.host=localhost      # MySQL host
+   db.port=3306           # MySQL port
+   db.user=root           # your MySQL username
+   db.password=root       # your MySQL password  <-- change this
+   server.port=5050       # port the DRS server listens on (clients connect to this)
+   ```
+
+   The account must be allowed to create databases (e.g. `root`).
+   **Do not change** `security.aesKey`: it decrypts the reporter data in the seed data and SQL script.
+3. Save the file. If you later build the jars (Option B below), rebuild with `mvn clean package` after
+   any change to this file, because the settings are packaged inside the server jar.
+
+The server **creates the `drs_enhanced` database and all tables itself** on first start and loads the
+DRS-Initial (Assignment 2) data, so no manual database setup is needed. Optionally you can load it
+manually first:
 
 ```bash
 mysql -u root -p < database/drs_enhanced.sql
 ```
 
+If the server stops with `Cannot connect to MySQL ...`, MySQL is not running or `db.user` / `db.password`
+in `server.properties` are wrong.
+
 ## 2. Run in NetBeans
+Complete **Section 1** first (MySQL running and `server.properties` updated).
+
 1. File > Open Project > select the `DRS-Enhanced` folder (Maven project).
 2. Right-click project > Build with Dependencies (downloads JavaFX, MySQL Connector/J, JUnit).
 3. Right-click project > Run Maven > **Run DRS Server** - wait for `listening on port 5050`.
 4. Click the green **Run Project** button (or Run Maven > **Run DRS Client**). Start more clients the same way.
 
 ## 3. Run from the command line
+Complete **Section 1** first (MySQL running and `server.properties` updated). Use **one** of the two options below; in both, start the server first and leave it running.
+
+### Option A - run with Maven (during development)
+Runs straight from the compiled classes; no jars are built.
 ```bash
-mvn clean package          # compiles, runs tests, builds target/*-server.jar and *-client.jar
-mvn exec:java              # server
-mvn javafx:run             # client (new terminal)
-java -jar target/DRS-Enhanced-1.0-server.jar
-java -jar target/DRS-Enhanced-1.0-client.jar
+mvn compile exec:java      # terminal 1: server - wait for "listening on port 5050"
+mvn javafx:run             # terminal 2: client (repeat in more terminals for more clients)
 ```
-Pre-built jars are also in `dist/` (`run-server.sh|bat`, `run-client.sh|bat`; the client script needs `JAVAFX_HOME` set to a JavaFX 21 SDK).
+
+### Option B - run the packaged jars (submission / no IDE)
+```bash
+mvn clean package                                # once: compiles, runs tests, builds the jars
+java -jar target/DRS-Enhanced-1.0-server.jar     # terminal 1: server
+java -jar target/DRS-Enhanced-1.0-client.jar     # terminal 2: client
+```
+Both jars are self-contained (MySQL driver and JavaFX included), so only Java 21 and MySQL are needed.
+Ignore the plain `DRS-Enhanced-1.0.jar`; it does not bundle its libraries.
+
+Copies of the two jars are in `dist/` and are run the same way:
+```bash
+java -jar dist/DRS-Enhanced-1.0-server.jar
+java -jar dist/DRS-Enhanced-1.0-client.jar
+```
+
+To use a different MySQL login without rebuilding, either place a `drs-server.properties` file
+(`db.user=...`, `db.password=...`) in the folder you run the server from, or pass it on the command line:
+```bash
+java -Ddb.password=yourpass -jar target/DRS-Enhanced-1.0-server.jar
+```
 
 ## 4. Test
 ```bash
@@ -67,7 +110,7 @@ login in `~/.drs-enhanced/keys`.
 DRS-Enhanced/
   pom.xml  nbactions.xml  README.md
   database/drs_enhanced.sql          create + populate script
-  dist/                              pre-built executable jars and run scripts
+  dist/                              copies of the packaged server and client jars
   docs/                              UML diagrams, GitHub task plan
   src/main/java/drs/common/...       shared model, protocol, signatures, validation
   src/main/java/drs/server/...       multi-threaded server, services, security, DAOs
