@@ -60,6 +60,7 @@ public class MainController {
             }
             refreshSummary();
         });
+        ViewUtil.setOnDataChanged(this::refreshSummary);
         refreshSummary();
     }
 
@@ -98,6 +99,7 @@ public class MainController {
 
     @FXML
     private void handleLogout() {
+        ViewUtil.setOnDataChanged(null);
         try {
             ClientContext.getClient().logout();
         } catch (ClientException ignored) {

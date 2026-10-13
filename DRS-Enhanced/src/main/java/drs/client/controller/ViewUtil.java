@@ -16,11 +16,22 @@ public final class ViewUtil {
 
     private ViewUtil() { }
 
+    /** Called after every successful action so the header bar can refresh its numbers. */
+    private static Runnable onDataChanged;
+
+    /** Sets what runs after a successful action (null to clear it). */
+    public static void setOnDataChanged(Runnable r) {
+        onDataChanged = r;
+    }
+
     /** Shows a green success message. */
     public static void success(Label label, String message) {
         label.getStyleClass().removeAll("msg-error", "msg-success");
         label.getStyleClass().add("msg-success");
         label.setText(message);
+        if (onDataChanged != null) {
+            onDataChanged.run();
+        }
     }
 
     /** Shows a red error message. */
