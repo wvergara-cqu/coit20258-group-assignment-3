@@ -1,0 +1,140 @@
+@startuml
+!include common.iuml
+hide circle
+skinparam linetype ortho
+entity users {
+  *id : INT <<PK, AI>>
+  --
+  *username : VARCHAR(30) <<UQ>>
+  *full_name : VARCHAR(150)
+  *role : VARCHAR(20)
+  *password_hash : VARCHAR(100)
+  *salt : VARCHAR(50)
+  public_key : TEXT
+  *created_at : DATETIME
+  last_login : DATETIME
+}
+entity departments {
+  *id : INT <<PK, AI>>
+  --
+  *name : VARCHAR(100) <<UQ>>
+  *type : VARCHAR(60)
+  *contact_person
+  *phone
+  *available : BOOLEAN
+  *updated_at
+}
+entity responders {
+  *id : INT <<PK, AI>>
+  --
+  *name
+  *role
+  *phone
+  *department_id : INT <<FK>>
+  username : VARCHAR(30) <<UQ>>
+  *available : BOOLEAN
+  *updated_at
+}
+entity disaster_reports {
+  *id : INT <<PK, AI>>
+  --
+  *type
+  *severity
+  *location : VARCHAR(150)
+  *description : TEXT
+  *reporter_name_enc : VARCHAR(512) <<AES>>
+  *reporter_phone_enc : VARCHAR(512) <<AES>>
+  *status
+  *priority : INT
+  reported_by : INT <<FK>>
+  signature : TEXT
+  *created_at
+  *updated_at
+}
+entity disaster_responses {
+  *id : INT <<PK, AI>>
+  --
+  *report_id : INT <<FK>>
+  notes : TEXT
+  created_by : INT <<FK>>
+  signature : TEXT
+  *created_at
+}
+entity response_departments {
+  *response_id : INT <<PK, FK>>
+  *department_id : INT <<PK, FK>>
+}
+entity response_responders {
+  *response_id : INT <<PK, FK>>
+  *responder_id : INT <<PK, FK>>
+}
+entity field_tasks #fdebd0 {
+  *id : INT <<PK, AI>>
+  --
+  *response_id <<FK>>
+  *report_id <<FK>>
+  *responder_id <<FK>>
+  instructions : TEXT
+  *status : VARCHAR(20)
+  *created_at
+  *updated_at
+}
+entity task_status_updates #fdebd0 {
+  *id : INT <<PK, AI>>
+  --
+  *task_id <<FK>>
+  *from_status
+  *to_status
+  note : VARCHAR(500)
+  updated_by <<FK>>
+  signature : TEXT
+  *signature_verified : BOOLEAN
+  *updated_at
+}
+entity public_warnings #fadbd8 {
+  *id : INT <<PK, AI>>
+  --
+  *report_id <<FK>>
+  *level
+  *affected_area
+  *radius_km : INT
+  *message : TEXT
+  *recommended_action
+  *valid_hours : INT
+  *status
+  issued_by <<FK>>
+  signature : TEXT
+  *issued_at
+  *expires_at
+}
+entity audit_log {
+  *id : INT <<PK, AI>>
+  --
+  user_id : INT
+  *username
+  *action
+  *entity
+  *entity_id : INT
+  payload_hash : CHAR(64)
+  signature : TEXT
+  *signed
+  *verified
+  *logged_at
+}
+departments ||--o{ responders
+users |o--o{ disaster_reports : reports
+disaster_reports ||--o{ disaster_responses
+users |o--o{ disaster_responses : creates
+disaster_responses ||--o{ response_departments
+departments ||--o{ response_departments
+disaster_responses ||--o{ response_responders
+responders ||--o{ response_responders
+disaster_responses ||--o{ field_tasks
+disaster_reports ||--o{ field_tasks
+responders ||--o{ field_tasks
+field_tasks ||--o{ task_status_updates
+users |o--o{ task_status_updates : updates
+disaster_reports ||--o{ public_warnings
+users |o--o{ public_warnings : issues
+users |o..o{ audit_log
+@enduml

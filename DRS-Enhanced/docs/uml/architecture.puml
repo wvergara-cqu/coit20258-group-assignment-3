@@ -1,0 +1,39 @@
+@startuml
+!include common.iuml
+skinparam componentStyle rectangle
+package "Tier 1 - Presentation (JavaFX client)" as T1 #eaf2f8 {
+  package "View (FXML + CSS)" {
+    [login.fxml\nmain.fxml\nreportDisaster / assessDisaster\ncoordination / fieldTasks\nwarnings / history / resources / audit] as V
+  }
+  package "Controller" {
+    [LoginController, MainController\nReportDisasterController ...\nWarningController, FieldTaskController] as C
+  }
+  package "Client model facade" {
+    [DRSClient\nClientKeyStore (RSA private key)\nServerConnection] as CM
+  }
+}
+package "Tier 2 - Business logic (multi-threaded server)" as T2 #fef5e7 {
+  [DRSServer\nServerSocket + fixed thread pool\nClientHandler x N] as S
+  [RequestDispatcher\nAccessControl (RBAC)\nSignature verification] as D
+  [AuthService  ReportService  TriageQueue\nCoordinationService  AgencyRecommender\nWarningService  WarningAdvisor\nTaskService  AuditService] as SV
+  [PasswordHasher  CryptoService (AES-GCM)] as SEC
+}
+package "Tier 3 - Data (MySQL 8)" as T3 #eafaf1 {
+  [ConnectionPool + DAOs\nUserDAO ReportDAO ResourceDAO\nResponseDAO TaskDAO WarningDAO AuditDAO] as DAO
+  database "drs_enhanced\n11 tables" as DB
+}
+package "drs.common (shared model)" as CMN #f4ecf7 {
+  [Domain model (Serializable)\nRequest / Response / Command\nSignatureUtil  InputValidator] as M
+}
+V --> C : events
+C --> V : updates
+C --> CM : typed calls
+CM --> S : TCP, Java object stream\n(signed Requests)
+S --> D
+D --> SV
+SV --> SEC
+SV --> DAO
+DAO --> DB : JDBC
+CM ..> M
+SV ..> M
+@enduml

@@ -1,0 +1,47 @@
+@startuml
+!include common.iuml
+autonumber
+actor "Response Controller" as U
+participant ":WarningView" as V
+participant ":WarningController" as C
+participant ":DRSClient" as M
+participant ":RequestDispatcher" as D
+participant ":WarningService" as S
+participant ":WarningAdvisor" as A
+participant ":WarningDAO" as DAO
+database MySQL as DB
+actor "Citizen client" as P
+U -> V : select incident
+V -> C : prefill(report)
+C -> M : suggestWarning(reportId)
+M -> D : SUGGEST_WARNING
+D -> S : suggest(id)
+S -> A : suggest(report)
+A --> S : level from severity, radius = base(type) x multiplier, validity
+S --> M : PublicWarning (unsaved)
+M --> C : suggestion
+C --> V : fill level, area, radius, hours, message, action
+U -> V : review / edit, click "Sign & Broadcast"
+V -> C : handleIssue()
+C -> M : issueWarning(w)
+M -> M : sign(w.canonicalForm())
+M -> D : ISSUE_WARNING + signature
+D -> D : RBAC + verify signature
+D -> S : issue(w, user, sig)
+S -> A : validate(w)
+S -> DAO : findActiveForReport(id)
+alt already an active warning
+  S --> D : ServiceException
+  D --> M : error "Cancel it before issuing a new level"
+else none active
+  S -> DAO : insert(w) issued_at=now, expires_at=now+validHours
+  DAO -> DB : INSERT public_warnings
+  D -> DB : audit ISSUE_WARNING
+  D --> M : ok "Emergency Warning #n broadcast"
+end
+loop every 15 s
+  P -> D : GET_ACTIVE_WARNINGS
+  D --> P : active warnings, most severe first
+end
+note over S, DB : scheduler thread every 60 s:\nUPDATE ... SET status='EXPIRED' WHERE expires_at <= NOW()
+@enduml

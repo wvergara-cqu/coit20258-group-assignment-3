@@ -1,0 +1,146 @@
+@startuml
+!include common.iuml
+hide empty members
+skinparam linetype ortho
+package drs.server {
+  class DRSServer {
+    -workers:ExecutorService
+    -scheduler:ScheduledExecutorService
+    -serverSocket:ServerSocket
+    +start()
+    +stop()
+    +main(args)
+  }
+  class ClientHandler <<Runnable>> {
+    -socket:Socket
+    +run()
+  }
+  class RequestDispatcher {
+    +handle(Request, Session):Response
+    -requireSignature(...)
+  }
+  class DataLoader {
+    +loadIfEmpty()
+  }
+  class ServerConfig
+}
+package drs.server.security {
+  class AccessControl {
+    -PERMISSIONS:EnumMap<Role,EnumSet<Command>>
+    +{static}isAllowed(role,cmd):boolean
+  }
+  class Session {
+    -user:User
+    -publicKey:PublicKey
+  }
+  class CryptoService {
+    +encrypt(s):String
+    +decrypt(s):String
+  }
+  class PasswordHasher {
+    +{static}hash(p,salt)
+    +{static}matches(...)
+  }
+}
+package drs.server.service {
+  class AuthService
+  class ReportService {
+    -triage:TriageQueue
+    +submit()
+    +updateStatus()
+    +{static}mask()
+  }
+  class TriageQueue {
+    -heap:PriorityQueue<DisasterReport>
+    +add()
+    +peek()
+    +updatePriority()
+  }
+  class CoordinationService {
+    -assignmentLock
+    +saveResponse()
+    +recommended()
+  }
+  class AgencyRecommender {
+    -rules:EnumMap<DisasterType,List>
+  }
+  class WarningService <<Feature 1>> #fadbd8 {
+    +suggest()
+    +issue()
+    +cancel()
+    +expireOverdue()
+  }
+  class WarningAdvisor <<Feature 1>> #fadbd8 {
+    +suggest(report)
+    +validate(w)
+  }
+  class TaskService <<Feature 2>> #fdebd0 {
+    +myTasks()
+    +update()
+    +history()
+  }
+  class AuditService {
+    +record(...)
+  }
+}
+package drs.server.db {
+  class ConnectionPool {
+    -idle:ArrayBlockingQueue<Connection>
+    +execute(fn)
+    +transaction(fn)
+  }
+  class DatabaseManager {
+    +{static}initialise(cfg)
+  }
+  class ReportDAO
+  class ResponseDAO
+  class TaskDAO #fdebd0
+  class WarningDAO #fadbd8
+  class UserDAO
+  class ResourceDAO
+  class AuditDAO
+}
+package drs.client {
+  class DRSClientApp <<Application>>
+  class "controller.*Controller" as CTRL <<RefreshableView>>
+  class "service.DRSClient" as DC {
+    +login()
+    +submitReport()
+    +issueWarning()
+    +updateTask() ...
+  }
+  class "net.ServerConnection" as SC {
+    +send(Request):Response
+  }
+  class "security.ClientKeyStore" as CKS
+}
+DRSServer *-- "0..*" ClientHandler
+DRSServer --> DataLoader
+ClientHandler --> RequestDispatcher
+ClientHandler --> Session
+RequestDispatcher --> AccessControl
+RequestDispatcher --> AuthService
+RequestDispatcher --> ReportService
+RequestDispatcher --> CoordinationService
+RequestDispatcher --> WarningService
+RequestDispatcher --> TaskService
+RequestDispatcher --> AuditService
+ReportService *-- TriageQueue
+CoordinationService *-- AgencyRecommender
+WarningService *-- WarningAdvisor
+ReportDAO --> CryptoService
+AuthService --> PasswordHasher
+ReportService --> ReportDAO
+CoordinationService --> ResponseDAO
+TaskService --> TaskDAO
+WarningService --> WarningDAO
+AuthService --> UserDAO
+AuditService --> AuditDAO
+ReportDAO --> ConnectionPool
+TaskDAO --> ConnectionPool
+DRSClientApp --> CTRL
+CTRL --> DC
+DC --> SC
+DC --> CKS
+SC ..> ClientHandler : TCP
+@enduml

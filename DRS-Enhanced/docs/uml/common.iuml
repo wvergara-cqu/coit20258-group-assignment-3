@@ -1,0 +1,9 @@
+skinparam defaultFontName DejaVu Sans
+skinparam shadowing false
+skinparam dpi 120
+skinparam ArrowColor #34495e
+skinparam ClassBorderColor #2c3e50
+skinparam ClassBackgroundColor #fdfefe
+skinparam ClassHeaderBackgroundColor #d6eaf8
+skinparam PackageBorderColor #7f8c8d
+skinparam NoteBackgroundColor #fef9e7

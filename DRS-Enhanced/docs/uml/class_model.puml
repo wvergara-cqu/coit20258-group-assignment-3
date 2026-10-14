@@ -1,0 +1,187 @@
+@startuml
+!include common.iuml
+hide empty members
+package drs.common.model {
+  interface Signable {
+    +canonicalForm() : String
+  }
+  class User {
+    -id:int
+    -username:String
+    -fullName:String
+    -role:Role
+    -createdAt:String
+    +isStaff():boolean
+    +toString():String
+  }
+  class DisasterReport {
+    -id:int
+    -type:DisasterType
+    -severity:Severity
+    -location:String
+    -description:String
+    -reporterName:String
+    -reporterPhone:String
+    -status:DisasterStatus
+    -priority:int
+    -reportedBy:String
+    -timestamp:String
+    -updatedAt:String
+    +{static}computePriority(t,s):int
+    +{static}isValidPriority(p):boolean
+    +getSummary():String
+    +canonicalForm():String
+    +toString():String
+  }
+  class Department {
+    -id:int
+    -name:String
+    -type:String
+    -contactPerson:String
+    -phone:String
+    -available:boolean
+    +getAvailabilityStatus():String
+    +equals(o):boolean
+  }
+  class Responder {
+    -id:int
+    -name:String
+    -role:String
+    -phone:String
+    -username:String
+    -available:boolean
+    +getDepartmentName():String
+  }
+  class DisasterResponse {
+    -id:int
+    -reportId:int
+    -notes:String
+    -createdBy:String
+    -createdAt:String
+    +addDepartment(d)
+    +addResponder(r)
+    +getDepartmentNames():String
+    +canonicalForm():String
+  }
+  class PublicWarning <<Feature 1>> #fadbd8 {
+    -id:int
+    -reportId:int
+    -level:WarningLevel
+    -affectedArea:String
+    -radiusKm:int
+    -message:String
+    -recommendedAction:String
+    -validHours:int
+    -status:WarningStatus
+    -issuedBy:String
+    -issuedAt:String
+    -expiresAt:String
+    +canonicalForm():String
+  }
+  class FieldTask <<Feature 2>> #fdebd0 {
+    -id:int
+    -responseId:int
+    -reportId:int
+    -responderId:int
+    -responderName:String
+    -location:String
+    -instructions:String
+    -status:TaskStatus
+    -createdAt:String
+    -updatedAt:String
+  }
+  class TaskStatusUpdate <<Feature 2>> #fdebd0 {
+    -id:int
+    -taskId:int
+    -fromStatus:TaskStatus
+    -toStatus:TaskStatus
+    -note:String
+    -updatedBy:String
+    -updatedAt:String
+    -signatureVerified:boolean
+    +canonicalForm():String
+  }
+  class AuditEntry {
+    -id:int
+    -username:String
+    -action:String
+    -entity:String
+    -entityId:int
+    -payloadHash:String
+    -signed:boolean
+    -verified:boolean
+    -loggedAt:String
+    +getSignatureStatus():String
+  }
+  enum Role {
+    CITIZEN
+    CONTROLLER
+    RESPONDER
+    ADMIN
+  }
+  enum DisasterType {
+    HURRICANE
+    EARTHQUAKE
+    FIRE
+    FLOOD
+    OTHER
+    -priorityWeight:int
+  }
+  enum Severity {
+    LOW
+    MEDIUM
+    HIGH
+    CRITICAL
+    -priorityWeight:int
+  }
+  enum DisasterStatus {
+    REPORTED
+    ASSESSING
+    RESPONDING
+    RESOLVED
+  }
+  enum WarningLevel #fadbd8 {
+    ADVICE
+    WATCH_AND_ACT
+    EMERGENCY_WARNING
+    -defaultAction
+    -colourHex
+    -rank
+  }
+  enum WarningStatus #fadbd8 {
+    ACTIVE
+    CANCELLED
+    EXPIRED
+  }
+  enum TaskStatus #fdebd0 {
+    DISPATCHED
+    ACKNOWLEDGED
+    EN_ROUTE
+    ON_SCENE
+    COMPLETED
+    DECLINED
+    -TRANSITIONS:EnumMap<TaskStatus,EnumSet>
+    +canTransitionTo(next):boolean
+    +isTerminal():boolean
+  }
+}
+Signable <|.. DisasterReport
+Signable <|.. DisasterResponse
+Signable <|.. PublicWarning
+Signable <|.. TaskStatusUpdate
+User --> Role
+DisasterReport --> DisasterType
+DisasterReport --> Severity
+DisasterReport --> DisasterStatus
+Responder "0..*" --> "1" Department
+DisasterResponse "0..*" --> "1" DisasterReport : reportId
+DisasterResponse o-- "0..*" Department
+DisasterResponse o-- "0..*" Responder
+DisasterResponse "1" *-- "0..*" FieldTask : dispatches
+FieldTask "0..*" --> "1" Responder
+FieldTask "1" *-- "0..*" TaskStatusUpdate : history
+FieldTask --> TaskStatus
+PublicWarning "0..*" --> "1" DisasterReport : reportId
+PublicWarning --> WarningLevel
+PublicWarning --> WarningStatus
+@enduml

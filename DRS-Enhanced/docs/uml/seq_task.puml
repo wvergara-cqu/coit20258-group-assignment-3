@@ -1,0 +1,44 @@
+@startuml
+!include common.iuml
+autonumber
+actor "Response Controller" as CT
+actor "Field Responder" as R
+participant ":Coordination\nController" as CC
+participant ":FieldTask\nController" as FC
+participant ":DRSClient" as M
+participant ":RequestDispatcher" as D
+participant ":CoordinationService" as CS
+participant ":TaskService" as TS
+participant ":ResponseDAO" as RD
+participant ":TaskDAO" as TD
+database MySQL as DB
+== Dispatch (UC-3 / UC-4) ==
+CT -> CC : choose incident, departments, responders, Save & Dispatch
+CC -> M : saveResponse(response) [signed]
+M -> D : SAVE_RESPONSE
+D -> CS : saveResponse()
+CS -> CS : synchronized(assignmentLock): re-check responders available
+CS -> RD : saveWithTasks() [one transaction]
+RD -> DB : INSERT response, join rows, deploy resources,\nINSERT field_tasks (DISPATCHED) per responder,\nreport -> RESPONDING
+D --> M : "n field task(s) dispatched"
+== Update status (UC-5, Enhanced Feature 2) ==
+R -> FC : select task, choose next status, note
+FC -> M : updateTask(TaskStatusUpdate) [signed]
+M -> D : UPDATE_TASK_STATUS
+D -> D : RBAC (RESPONDER) + verify signature
+D -> TS : update(u, user, sig)
+TS -> TD : findById(taskId)
+TS -> TS : task assigned to me?\ncurrent.canTransitionTo(next)?
+alt rule violated
+  TS --> M : error (not yours / illegal transition)
+else ok
+  TS -> TD : applyUpdate()
+  TD -> DB : UPDATE field_tasks SET status=next\nWHERE id=? AND status=current  (optimistic lock)
+  TD -> DB : INSERT task_status_updates (signature, verified, time)
+  opt next is COMPLETED or DECLINED
+    TD -> DB : UPDATE responders SET available=TRUE
+  end
+  D --> M : "Task #n is now On Scene"
+  FC -> M : getTaskHistory(taskId)
+end
+@enduml

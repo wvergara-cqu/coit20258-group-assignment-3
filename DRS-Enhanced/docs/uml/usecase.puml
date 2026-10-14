@@ -1,0 +1,52 @@
+@startuml
+!include common.iuml
+left to right direction
+skinparam usecaseBackgroundColor #fdfefe
+skinparam usecaseBorderColor #2c3e50
+actor "Public Citizen" as CIT
+actor "Response Controller" as CTL
+actor "Field Responder" as RSP
+actor "Administrator" as ADM
+actor "MySQL Database" as DBA <<system>>
+ADM -|> CTL
+rectangle "DRS-Enhanced" {
+  usecase "UC-0 Log in / Register" as UC0
+  usecase "UC-1 Report Disaster Incident" as UC1
+  usecase "UC-1a Track My Reports" as UC1a
+  usecase "UC-2 Assess and Prioritise Report" as UC2
+  usecase "UC-3 Coordinate Inter-Department\nResponse" as UC3
+  usecase "UC-4 Dispatch Field Tasks" as UC4
+  usecase "UC-5 Update Task Status\n<<Enhanced Feature 2>>" as UC5 #fdebd0
+  usecase "UC-5a View Task History" as UC5a #fdebd0
+  usecase "UC-6 Issue Public Warning\n<<Enhanced Feature 1>>" as UC6 #fadbd8
+  usecase "UC-6a Cancel Warning" as UC6a #fadbd8
+  usecase "UC-7 View Public Warnings Board" as UC7 #fadbd8
+  usecase "UC-8 Manage Resource Availability" as UC8
+  usecase "UC-9 View History Log" as UC9
+  usecase "UC-10 Review Audit Log" as UC10
+  usecase "Sign request\n(non-repudiation)" as SIG
+}
+CIT --> UC0
+CIT --> UC1
+CIT --> UC1a
+CIT --> UC7
+CTL --> UC2
+CTL --> UC3
+CTL --> UC6
+CTL --> UC6a
+CTL --> UC8
+CTL --> UC9
+CTL --> UC5a
+RSP --> UC5
+RSP --> UC5a
+RSP --> UC7
+ADM --> UC10
+UC3 ..> UC4 : <<include>>
+UC1 ..> SIG : <<include>>
+UC3 ..> SIG : <<include>>
+UC5 ..> SIG : <<include>>
+UC6 ..> SIG : <<include>>
+UC5a ..> UC5 : <<extend>>
+UC6a ..> UC6 : <<extend>>
+UC4 --> DBA
+@enduml

@@ -1,0 +1,43 @@
+@startuml
+!include common.iuml
+autonumber
+actor Citizen
+participant ":ReportDisasterView\n(FXML)" as V
+participant ":ReportDisaster\nController" as C
+participant ":DRSClient" as M
+participant ":ClientHandler\n(worker thread)" as H
+participant ":RequestDispatcher" as D
+participant ":ReportService" as S
+participant ":ReportDAO" as DAO
+participant ":CryptoService" as CR
+database "MySQL" as DB
+Citizen -> V : fill form, click Submit
+V -> C : handleSubmit()
+C -> C : validate() (InputValidator)
+alt input invalid
+  C --> V : show red error, nothing sent
+else input valid
+  C -> M : submitReport(report)
+  M -> M : sign(canonicalForm, privateKey)
+  M -> H : Request(SUBMIT_REPORT, report, signature)
+  H -> D : handle(request, session)
+  D -> D : AccessControl.isAllowed(CITIZEN, SUBMIT_REPORT)
+  D -> D : verify signature with session public key
+  alt signature invalid
+    D -> DB : audit REJECTED_SUBMIT_REPORT
+    D --> M : Response.error
+  else valid
+    D -> S : submit(report, user, sig)
+    S -> S : validate, computePriority()
+    S -> DAO : insert(report)
+    DAO -> CR : encrypt(name), encrypt(phone)
+    DAO -> DB : INSERT disaster_reports (server timestamp)
+    DB --> DAO : generated id
+    S -> S : triageQueue.add(report)
+    D -> DB : audit SUBMIT_REPORT (hash, verified)
+    D --> M : Response.ok("Tracking ID: DRS-n")
+    M --> C : report with id
+    C --> V : green confirmation, refresh My Reports
+  end
+end
+@enduml
