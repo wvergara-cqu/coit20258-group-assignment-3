@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- NetBeans run actions. Right-click the project > Run Maven > "Run DRS Server" / "Run DRS Client".
+     The green Run button starts the client. -->
+<actions>
+    <action>
+        <actionName>run</actionName>
+        <packagings><packaging>jar</packaging></packagings>
+        <goals>
+            <goal>clean</goal>
+            <goal>javafx:run</goal>
+        </goals>
+    </action>
+    <action>
+        <actionName>CUSTOM-run-server</actionName>
+        <displayName>Run DRS Server</displayName>
+        <goals>
+            <goal>process-classes</goal>
+            <goal>org.codehaus.mojo:exec-maven-plugin:3.1.0:java</goal>
+        </goals>
+        <properties>
+            <exec.mainClass>drs.server.DRSServer</exec.mainClass>
+        </properties>
+    </action>
+    <action>
+        <actionName>CUSTOM-run-client</actionName>
+        <displayName>Run DRS Client</displayName>
+        <goals>
+            <goal>process-classes</goal>
+            <goal>javafx:run</goal>
+        </goals>
+    </action>
+    <action>
+        <actionName>CUSTOM-test-all</actionName>
+        <displayName>Run All Tests</displayName>
+        <goals>
+            <goal>test</goal>
+        </goals>
+    </action>
+</actions>
