@@ -73,6 +73,12 @@ java -jar target/DRS-Enhanced-1.0-client.jar     # terminal 2: client
 Both jars are self-contained (MySQL driver and JavaFX included), so only Java 21 and MySQL are needed.
 Ignore the plain `DRS-Enhanced-1.0.jar`; it does not bundle its libraries.
 
+The client jar contains the JavaFX native libraries for the OS it was built on. To build a client jar
+that also runs on Windows and Linux, package with the `all-platforms` profile:
+```bash
+mvn clean package -Pall-platforms
+```
+
 Copies of the two jars are in `dist/` and are run the same way:
 ```bash
 java -jar dist/DRS-Enhanced-1.0-server.jar

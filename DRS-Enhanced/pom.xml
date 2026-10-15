@@ -148,4 +148,28 @@
             </plugin>
         </plugins>
     </build>
+    <!--
+      mvn clean package -Pall-platforms
+      Adds the Windows and Linux JavaFX native libraries so the shaded client jar
+      runs on Windows, Linux and Apple Silicon macOS, not only on the build machine's OS.
+    -->
+    <profiles>
+        <profile>
+            <id>all-platforms</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-graphics</artifactId>
+                    <version>${javafx.version}</version>
+                    <classifier>win</classifier>
+                </dependency>
+                <dependency>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-graphics</artifactId>
+                    <version>${javafx.version}</version>
+                    <classifier>linux</classifier>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 </project>
