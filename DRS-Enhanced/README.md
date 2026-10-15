@@ -24,14 +24,17 @@ Enhanced features (new in A3):
 
    ```properties
    db.host=localhost      # MySQL host
-   db.port=3306           # MySQL port
+   db.port=3306           # MySQL port (3306 is the default; change it if yours differs, e.g. 3356)
    db.user=root           # your MySQL username
-   db.password=root       # your MySQL password  <-- change this
+   db.password=root   # your MySQL password  <-- change this
    server.port=5050       # port the DRS server listens on (clients connect to this)
    ```
 
    The account must be allowed to create databases (e.g. `root`).
    **Do not change** `security.aesKey`: it decrypts the reporter data in the seed data and SQL script.
+
+   This file is used by NetBeans, `mvn exec:java`, `mvn test` (the integration tests read it too) and
+   is packaged into the server jar.
 3. Save the file. If you later build the jars (Option B below), rebuild with `mvn clean package` after
    any change to this file, because the settings are packaged inside the server jar.
 
@@ -43,8 +46,9 @@ manually first:
 mysql -u root -p < database/drs_enhanced.sql
 ```
 
-If the server stops with `Cannot connect to MySQL ...`, MySQL is not running or `db.user` / `db.password`
-in `server.properties` are wrong.
+If the server stops with `Cannot connect to MySQL ...`, MySQL is not running, or `db.port`, `db.user`
+or `db.password` do not match your MySQL installation. Check your login with
+`mysql -u root -p -P <port>`; it must work before the server can connect.
 
 ## 2. Run in NetBeans
 Complete **Section 1** first (MySQL running and `server.properties` updated).
@@ -85,11 +89,29 @@ java -jar dist/DRS-Enhanced-1.0-server.jar
 java -jar dist/DRS-Enhanced-1.0-client.jar
 ```
 
-To use a different MySQL login without rebuilding, either place a `drs-server.properties` file
-(`db.user=...`, `db.password=...`) in the folder you run the server from, or pass it on the command line:
-```bash
-java -Ddb.password=yourpass -jar target/DRS-Enhanced-1.0-server.jar
-```
+#### Changing the MySQL settings for the jar without rebuilding
+The settings inside the jar come from `server.properties` at build time. To override them without
+rebuilding, use **either** of these:
+
+1. **A `drs-server.properties` file** in the folder you run the command from. For
+   `java -jar dist/DRS-Enhanced-1.0-server.jar` run from the project folder, that means the project
+   root (next to `pom.xml`), **not** inside `dist/`. Example:
+
+   ```properties
+   db.host=localhost
+   db.port=3306
+   db.user=root
+   db.password=root
+   ```
+
+2. **Command-line options**, which override everything else:
+
+   ```bash
+   java -Ddb.port=3356 -Ddb.password=password -jar dist/DRS-Enhanced-1.0-server.jar
+   ```
+
+`drs-server.properties` only affects the server when it is run from that folder. It is not used by
+NetBeans or `mvn test`; for those, edit `src/main/resources/drs/server/server.properties` (Section 1).
 
 ## 4. Test
 ```bash
